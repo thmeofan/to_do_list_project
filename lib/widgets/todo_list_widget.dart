@@ -85,7 +85,6 @@ class _ToDoListWidgetState extends State<ToDoListWidget> {
                               .read<ToDoListBloc>()
                               .add(IsCheckedEvent(widget.toDoNote));
                           isCheckedFunction();
-
                         });
                       },
                     ),

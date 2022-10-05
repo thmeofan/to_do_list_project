@@ -29,7 +29,8 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
 
   Future<void> saveToDoNote(ToDoModel note) async {
     var box = await Hive.openBox(notesKeeperKey);
-    List<ToDoModel> notesList = box.get(notesListKey,defaultValue: []).cast<ToDoModel>();
+    List<ToDoModel> notesList =
+        box.get(notesListKey, defaultValue: []).cast<ToDoModel>();
     notesList.add(note);
 
     await box.put(notesListKey, notesList);
@@ -41,18 +42,19 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(228,230,195,1),
+      backgroundColor: Color.fromRGBO(228, 230, 195, 1),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(137,152,120,1),
+        backgroundColor: Color.fromRGBO(137, 152, 120, 1),
         title: const Text("Create"),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Container(decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            color: Color.fromRGBO(137,152,120,1),
-          ),
+          Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              color: Color.fromRGBO(137, 152, 120, 1),
+            ),
             width: double.maxFinite,
             margin: const EdgeInsets.all(30),
             padding: const EdgeInsets.all(15),
@@ -68,15 +70,19 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
               FloatingActionButton(
                 heroTag: "btn3",
                 onPressed: () {
-                  ToDoModel toDoNote = ToDoModel(myController.text, random.nextInt(1 << 32).toString(), false);
+                  ToDoModel toDoNote = ToDoModel(myController.text,
+                      random.nextInt(1 << 32).toString(), false);
                   context.read<ToDoListBloc>().add(SaveToDoEvent(toDoNote));
                   myController.clear();
-                  FirebaseFirestore.instance.collection("todos").doc(toDoNote.id).set(toDoNote.toJson());
+                  FirebaseFirestore.instance
+                      .collection("todos")
+                      .doc(toDoNote.id)
+                      .set(toDoNote.toJson());
                   saveToDoNote(toDoNote);
                   FocusScope.of(context).unfocus();
                   Navigator.of(context).pop();
                 },
-                backgroundColor: Color.fromRGBO(137,152,120,1),
+                backgroundColor: Color.fromRGBO(137, 152, 120, 1),
                 child: const Icon(Icons.save_as_outlined),
               ),
             ],

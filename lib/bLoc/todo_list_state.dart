@@ -12,6 +12,4 @@ class EmptyState extends ToDoListState {}
 
 class LoadingState extends ToDoListState {}
 
-class IsCheckedState extends ToDoListState{
-
-}
+class IsCheckedState extends ToDoListState {}

@@ -8,7 +8,6 @@ class SaveToDoEvent extends ToDoListEvent {
   SaveToDoEvent(this.toDoNote);
 }
 
-
 class DeleteToDoEvent extends ToDoListEvent {
   final ToDoModel note;
 
@@ -26,7 +25,9 @@ class ChangeToDoEvent extends ToDoListEvent {
 
   ChangeToDoEvent(this.note);
 }
- class IsCheckedEvent extends ToDoListEvent{
-   final ToDoModel note;
+
+class IsCheckedEvent extends ToDoListEvent {
+  final ToDoModel note;
+
   IsCheckedEvent(this.note);
- }
+}

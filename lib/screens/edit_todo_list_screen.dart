@@ -19,10 +19,8 @@ class EditNoteScreen extends StatefulWidget {
 class _EditNoteScreenState extends State<EditNoteScreen> {
   late final TextEditingController myController;
 
-
   @override
   void initState() {
-
     myController = TextEditingController();
     super.initState();
   }
@@ -36,21 +34,22 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
   Future<void> editNote(ToDoModel newNote) async {
     var box = await Hive.openBox(notesKeeperKey);
     List<ToDoModel> notesList = box.get(notesListKey).cast<ToDoModel>();
-    ToDoModel theNote = notesList.firstWhere((element) => element.id == newNote.id);
+    ToDoModel theNote =
+        notesList.firstWhere((element) => element.id == newNote.id);
     int indexOfTheNote = notesList.indexOf(theNote);
     notesList[indexOfTheNote] = newNote;
     await box.put(notesListKey, notesList);
     await box.close();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final ToDoModel toDoNote= ModalRoute.of(context)?.settings.arguments! as ToDoModel;
-    myController.text=toDoNote.text;
+    final ToDoModel toDoNote =
+        ModalRoute.of(context)?.settings.arguments! as ToDoModel;
+    myController.text = toDoNote.text;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(137,152,120,1),
+        backgroundColor: Color.fromRGBO(137, 152, 120, 1),
         title: const Text("Edit"),
       ),
       body: Column(
@@ -65,16 +64,18 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
               FloatingActionButton(
                 heroTag: "btn4",
                 onPressed: () {
-                  ToDoModel newNote = ToDoModel(myController.text, toDoNote.id, false);
+                  ToDoModel newNote =
+                      ToDoModel(myController.text, toDoNote.id, false);
                   context.read<ToDoListBloc>().add(ChangeToDoEvent(newNote));
                   editNote(newNote);
                   FocusScope.of(context).unfocus();
                   Navigator.of(context).pop();
-                  FirebaseFirestore.instance.collection("todos").doc(newNote.id).set(newNote.toJson());
-
+                  FirebaseFirestore.instance
+                      .collection("todos")
+                      .doc(newNote.id)
+                      .set(newNote.toJson());
                 },
-                backgroundColor: Color.fromRGBO(137,152,120,1),
-
+                backgroundColor: Color.fromRGBO(137, 152, 120, 1),
                 child: const Icon(Icons.save_as_outlined),
               ),
             ],
