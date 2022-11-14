@@ -1,15 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
-import 'package:to_do_list_project/class_repository/todo_repository.dart';
 
 import '../bLoc/todo_list_bloc.dart';
 import '../bLoc/todo_list_event.dart';
 import '../bLoc/todo_list_state.dart';
 import '../constants/screens.dart';
-import '../main.dart';
-import '../models/todo_list_model.dart';
 import '../widgets/todo_list_widget.dart';
 
 class ToDoListsScreen extends StatefulWidget {
@@ -76,7 +71,6 @@ class _ToDoScreenState extends State<ToDoListsScreen> {
                         value: Menu.delete,
                         child: Text('Delete all'),
                         onTap: () {
-
                           context
                               .read<ToDoListBloc>()
                               .add(DeleteAllToDoEvent());

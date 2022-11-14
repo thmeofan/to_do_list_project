@@ -53,7 +53,7 @@ class _ToDoListWidgetState extends State<ToDoListWidget> {
                       activeColor: Color.fromRGBO(228, 230, 195, 1),
                       checkColor: Color.fromRGBO(137, 152, 120, 1),
                       onChanged: (bool? value) {
-                        widget.toDoNote.isChecked=!widget.toDoNote.isChecked;
+                        widget.toDoNote.isChecked = !widget.toDoNote.isChecked;
                         context
                             .read<ToDoListBloc>()
                             .add(ChangeToDoEvent(widget.toDoNote));

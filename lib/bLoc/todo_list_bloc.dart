@@ -6,15 +6,12 @@ import 'package:to_do_list_project/class_repository/todo_repository.dart';
 import '../models/todo_list_model.dart';
 
 class ToDoListBloc extends Bloc<ToDoListEvent, ToDoListState> {
-
-
   ToDoListBloc() : super(LoadingState()) {
     on<SaveToDoEvent>(_onSaveNote);
     on<DeleteToDoEvent>(_onDeleteNote);
     on<DeleteAllToDoEvent>(_onDeleteAllNotes);
     on<EmptyListEvent>(_onEmptyList);
     on<ChangeToDoEvent>(_onChangeNote);
-    //on<IsCheckedEvent>(_onIsChecked);
     on<UpdateToDoEvent>(_onUpdateToDo);
     ToDoRepository().collection.snapshots().listen((event) {
       List<ToDoModel> _toDoNotes = [];
@@ -28,23 +25,17 @@ class ToDoListBloc extends Bloc<ToDoListEvent, ToDoListState> {
   }
 
   void _onSaveNote(SaveToDoEvent event, Emitter<ToDoListState> emit) {
-    // _toDoNotes.add(event.toDoNote);
     ToDoRepository().saveToFirebase(event.toDoNote);
   }
 
   void _onDeleteNote(DeleteToDoEvent event, Emitter<ToDoListState> emit) {
-    // _toDoNotes.remove(event.note);
-    //  if (_toDoNotes.isEmpty) {
-    //    emit(EmptyState());
-    //  } else {
-    //    emit(ToDoListDataState(_toDoNotes));
     ToDoRepository().deleteFromFirebase(event.note);
     ToDoRepository().deleteFromHive(event.note);
     //  }
   }
 
-  void _onDeleteAllNotes(DeleteAllToDoEvent event,
-      Emitter<ToDoListState> emit) {
+  void _onDeleteAllNotes(
+      DeleteAllToDoEvent event, Emitter<ToDoListState> emit) {
     //  _toDoNotes.clear();
     ToDoRepository().deleteAllFromHive();
     ToDoRepository().deleteAllFromFirebase();
@@ -58,22 +49,15 @@ class ToDoListBloc extends Bloc<ToDoListEvent, ToDoListState> {
       emit(ToDoListDataState(event.toDosList));
     }
   }
-    void _onEmptyList(EmptyListEvent event, Emitter<ToDoListState> emit) {
-      emit(EmptyState());
-    }
 
-    void _onChangeNote(ChangeToDoEvent event, Emitter<ToDoListState> emit) {
-      // _notes[_notes.indexOf(event.note)]= event.note;
-
-      ToDoRepository().editInFirebase(event.note);
-      ToDoRepository().editInHive(event.note);
-
-    }
-
-    // void _onIsChecked(IsCheckedEvent event, Emitter<ToDoListState> emit) {
-    //
-    //   ToDoRepository().isCheckedForFirebase(event.note);
-    //   ToDoRepository().isCheckedForHive(event.note);
-    //
-    // }
+  void _onEmptyList(EmptyListEvent event, Emitter<ToDoListState> emit) {
+    emit(EmptyState());
   }
+
+  void _onChangeNote(ChangeToDoEvent event, Emitter<ToDoListState> emit) {
+    // _notes[_notes.indexOf(event.note)]= event.note;
+
+    ToDoRepository().editInFirebase(event.note);
+    ToDoRepository().editInHive(event.note);
+  }
+}
