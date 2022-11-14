@@ -31,3 +31,8 @@ class IsCheckedEvent extends ToDoListEvent {
 
   IsCheckedEvent(this.note);
 }
+class UpdateToDoEvent extends ToDoListEvent{
+  final List <ToDoModel> toDosList;
+
+  UpdateToDoEvent(this.toDosList);
+}

@@ -1,14 +1,12 @@
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
+import 'package:unicons/unicons.dart';
 
 import '../bLoc/todo_list_bloc.dart';
 import '../bLoc/todo_list_event.dart';
-import '../main.dart';
 import '../models/todo_list_model.dart';
 
 class AddNoteScreen extends StatefulWidget {
@@ -27,16 +25,16 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     super.dispose();
   }
 
-  Future<void> saveToDoNote(ToDoModel note) async {
-    var box = await Hive.openBox(notesKeeperKey);
-    List<ToDoModel> notesList =
-        box.get(notesListKey, defaultValue: []).cast<ToDoModel>();
-    notesList.add(note);
-
-    await box.put(notesListKey, notesList);
-    await box.close();
-  }
-
+  // Future<void> saveToDoNote(ToDoModel note) async {
+  //   var box = await Hive.openBox(notesKeeperKey);
+  //   List<ToDoModel> notesList =
+  //       box.get(notesListKey, defaultValue: []).cast<ToDoModel>();
+  //   notesList.add(note);
+  //
+  //   await box.put(notesListKey, notesList);
+  //   await box.close();
+  // }
+  //
   Random random = Random();
 
   @override
@@ -59,6 +57,14 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
             margin: const EdgeInsets.all(30),
             padding: const EdgeInsets.all(15),
             child: TextField(
+              decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+              ),
               cursorColor: Colors.white,
               controller: myController,
             ),
@@ -73,17 +79,12 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                   ToDoModel toDoNote = ToDoModel(myController.text,
                       random.nextInt(1 << 32).toString(), false);
                   context.read<ToDoListBloc>().add(SaveToDoEvent(toDoNote));
-                  myController.clear();
-                  FirebaseFirestore.instance
-                      .collection("todos")
-                      .doc(toDoNote.id)
-                      .set(toDoNote.toJson());
-                  saveToDoNote(toDoNote);
                   FocusScope.of(context).unfocus();
                   Navigator.of(context).pop();
+                  myController.clear();
                 },
                 backgroundColor: Color.fromRGBO(137, 152, 120, 1),
-                child: const Icon(Icons.save_as_outlined),
+                child: const Icon(UniconsLine.notes),
               ),
             ],
           )

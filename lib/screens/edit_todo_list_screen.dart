@@ -1,12 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
+import 'package:unicons/unicons.dart';
 
 import '../bLoc/todo_list_bloc.dart';
 import '../bLoc/todo_list_event.dart';
-import '../main.dart';
 import '../models/todo_list_model.dart';
 
 class EditNoteScreen extends StatefulWidget {
@@ -31,17 +29,6 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     super.dispose();
   }
 
-  Future<void> editNote(ToDoModel newNote) async {
-    var box = await Hive.openBox(notesKeeperKey);
-    List<ToDoModel> notesList = box.get(notesListKey).cast<ToDoModel>();
-    ToDoModel theNote =
-        notesList.firstWhere((element) => element.id == newNote.id);
-    int indexOfTheNote = notesList.indexOf(theNote);
-    notesList[indexOfTheNote] = newNote;
-    await box.put(notesListKey, notesList);
-    await box.close();
-  }
-
   @override
   Widget build(BuildContext context) {
     final ToDoModel toDoNote =
@@ -57,6 +44,16 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
         children: [
           TextField(
             controller: myController,
+            decoration: InputDecoration(
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
+            ),
+            cursorColor: Colors.black,
+            style: TextStyle(color: Colors.black),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -67,16 +64,11 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                   ToDoModel newNote =
                       ToDoModel(myController.text, toDoNote.id, false);
                   context.read<ToDoListBloc>().add(ChangeToDoEvent(newNote));
-                  editNote(newNote);
                   FocusScope.of(context).unfocus();
                   Navigator.of(context).pop();
-                  FirebaseFirestore.instance
-                      .collection("todos")
-                      .doc(newNote.id)
-                      .set(newNote.toJson());
                 },
                 backgroundColor: Color.fromRGBO(137, 152, 120, 1),
-                child: const Icon(Icons.save_as_outlined),
+                child: const Icon(UniconsLine.notes),
               ),
             ],
           )
