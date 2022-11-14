@@ -1,14 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 
 import '../bLoc/todo_list_bloc.dart';
 import '../bLoc/todo_list_event.dart';
 import '../bLoc/todo_list_state.dart';
 import '../constants/screens.dart';
-import '../main.dart';
-import '../models/todo_list_model.dart';
 import '../widgets/todo_list_widget.dart';
 
 class ToDoListsScreen extends StatefulWidget {
@@ -25,28 +21,28 @@ enum Menu { delete }
 class _ToDoScreenState extends State<ToDoListsScreen> {
   String _selectedMenu = '';
 
-  Future<void> deleteAllToDoNotes() async {
-    var box = await Hive.openBox(notesKeeperKey);
-    List<ToDoModel> toDosList = box.get(notesListKey).cast<ToDoModel>();
-    toDosList.clear();
-
-    await box.put(notesListKey, toDosList);
-    await box.close();
-  }
-
-  CollectionReference todos = FirebaseFirestore.instance.collection('todos');
-
-  Future<void> batchDelete() {
-    WriteBatch batch = FirebaseFirestore.instance.batch();
-
-    return todos.get().then((querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        batch.delete(doc.reference);
-      });
-
-      return batch.commit();
-    });
-  }
+  // Future<void> deleteAllToDoNotes() async {
+  //   var box = await Hive.openBox(notesKeeperKey);
+  //   List<ToDoModel> toDosList = box.get(notesListKey).cast<ToDoModel>();
+  //   toDosList.clear();
+  //
+  //   await box.put(notesListKey, toDosList);
+  //   await box.close();
+  // }
+  //
+  // CollectionReference todos = FirebaseFirestore.instance.collection('todos');
+  //
+  // Future<void> batchDelete() {
+  //   WriteBatch batch = FirebaseFirestore.instance.batch();
+  //
+  //   return todos.get().then((querySnapshot) {
+  //     querySnapshot.docs.forEach((doc) {
+  //       batch.delete(doc.reference);
+  //     });
+  //
+  //     return batch.commit();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +74,6 @@ class _ToDoScreenState extends State<ToDoListsScreen> {
                           context
                               .read<ToDoListBloc>()
                               .add(DeleteAllToDoEvent());
-                          deleteAllToDoNotes();
-                          batchDelete();
                         }),
                   ]),
         ],
