@@ -25,16 +25,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     super.dispose();
   }
 
-  // Future<void> saveToDoNote(ToDoModel note) async {
-  //   var box = await Hive.openBox(notesKeeperKey);
-  //   List<ToDoModel> notesList =
-  //       box.get(notesListKey, defaultValue: []).cast<ToDoModel>();
-  //   notesList.add(note);
-  //
-  //   await box.put(notesListKey, notesList);
-  //   await box.close();
-  // }
-  //
+
   Random random = Random();
 
   @override

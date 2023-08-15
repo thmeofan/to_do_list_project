@@ -1,6 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do_list_project/bLoc/todo_list_event.dart';
 import 'package:to_do_list_project/bLoc/todo_list_state.dart';
+import 'package:to_do_list_project/class_repository/notification_service.dart';
 import 'package:to_do_list_project/class_repository/todo_repository.dart';
 
 import '../models/todo_list_model.dart';
@@ -26,6 +28,10 @@ class ToDoListBloc extends Bloc<ToDoListEvent, ToDoListState> {
 
   void _onSaveNote(SaveToDoEvent event, Emitter<ToDoListState> emit) {
     ToDoRepository().saveToFirebase(event.toDoNote);
+   // FirebaseMessaging.onBackgroundMessage(backgroundMassageHandler);
+    NotificationService().sendPush();
+    NotificationService().foregroundMessage();
+
   }
 
   void _onDeleteNote(DeleteToDoEvent event, Emitter<ToDoListState> emit) {

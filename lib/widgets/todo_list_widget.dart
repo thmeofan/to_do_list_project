@@ -10,17 +10,10 @@ import '../models/todo_list_model.dart';
 
 Icon checkMark = Icon(Icons.square_outlined);
 
-class ToDoListWidget extends StatefulWidget {
+class ToDoListWidget extends StatelessWidget {
   final ToDoModel toDoNote;
 
   const ToDoListWidget({super.key, required this.toDoNote});
-
-  @override
-  State<ToDoListWidget> createState() => _ToDoListWidgetState();
-}
-
-class _ToDoListWidgetState extends State<ToDoListWidget> {
-  bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +23,12 @@ class _ToDoListWidgetState extends State<ToDoListWidget> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Container(
-            // color: const Color.fromRGBO(228, 230, 195, 1),
-
             width: double.maxFinite,
             margin: const EdgeInsets.all(15),
             child: GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, Screens.editToDo,
-                    arguments: widget.toDoNote);
+                    arguments: toDoNote);
               },
               child: Container(
                 decoration: const BoxDecoration(
@@ -49,20 +40,20 @@ class _ToDoListWidgetState extends State<ToDoListWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Checkbox(
-                      value: widget.toDoNote.isChecked,
+                      value: toDoNote.isChecked,
                       activeColor: Color.fromRGBO(228, 230, 195, 1),
                       checkColor: Color.fromRGBO(137, 152, 120, 1),
                       onChanged: (bool? value) {
-                        widget.toDoNote.isChecked = !widget.toDoNote.isChecked;
+                        toDoNote.isChecked = !toDoNote.isChecked;
                         context
                             .read<ToDoListBloc>()
-                            .add(ChangeToDoEvent(widget.toDoNote));
+                            .add(ChangeToDoEvent(toDoNote));
                         FocusScope.of(context).unfocus();
                       },
                     ),
                     Expanded(
                       child: Text(
-                        widget.toDoNote.text,
+                        toDoNote.text,
                         style: AppTextStyles.toDoNoteStyle,
                       ),
                     ),
@@ -70,7 +61,7 @@ class _ToDoListWidgetState extends State<ToDoListWidget> {
                       onPressed: () async {
                         context
                             .read<ToDoListBloc>()
-                            .add(DeleteToDoEvent(widget.toDoNote));
+                            .add(DeleteToDoEvent(toDoNote));
                         FocusScope.of(context).unfocus();
                       },
                       iconSize: 35,
